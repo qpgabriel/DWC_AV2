@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+
+	<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:h="http://xmlns.jcp.org/jsf/html"
+		xmlns:f="http://xmlns.jcp.org/jsf/core"
+		xmlns:p="http://primefaces.org/ui"
+		xmlns:ui="http://xmlns.jcp.org/jsf/facelets" 
+		template="/templates/template.xhtml">
+
+	<ui:define name="cabecalho">
+		<ui:include src="/templates/cabecalho.xhtml" />
+	</ui:define>
+	
+	<ui:define name="menu_esquerdo">
+		<ui:include src="/templates/menu_esquerdo.xhtml" />
+	</ui:define>
+	
+	<ui:define name="conteudo">
+			
+		<h:form id="fTabela">
+			<p:dataTable id="tabEstoques" var="p" value="#{paginaEstoque.estoques}"
+				rows="10"
+	            paginator="true" >
+	            
+			    <p:column headerText="Id">
+			        <h:outputText value="#{p.id}" />
+			    </p:column>
+			 
+			    <p:column headerText="Qnt">
+			        <h:outputText value="#{p.qnt}" />
+			    </p:column>
+			 
+			    <p:column headerText="Preco">
+			        <h:outputText value="#{p.preco}" />
+			    </p:column>
+			    
+			    <p:column headerText="Produtos">
+			         <p:dataList value="#{p.produtos}" var="produto" type="ordered"
+			         	emptyMessage="Sem produtos cadastrados" rows="3" >
+				        #{fornecedor}
+				    </p:dataList>
+			    </p:column>
+			    			    
+			    <p:column headerText="Usuario">
+			         <p:dataList value="#{p.usuarios}" var="usuario" type="ordered"
+			         	emptyMessage="Sem usuario cadastradas" rows="3" >
+				        #{categoria}
+				    </p:dataList>
+			    </p:column>
+			    
+
+			    
+			    <p:column headerText=".">
+			        <p:commandButton icon="pi pi-pencil" actionListener="#{paginaPestoque.PrepararEditar}"  
+			        	onclick="PF('dlgEditarPestoque').show()"
+			        	update=":fEditar:pgEditar"/>
+			        	
+			        <p:commandButton icon="ui-icon-trash"/>
+			    </p:column>
+	
+			</p:dataTable>
+		</h:form>
+		
+		<p:dialog header="Editar um cadastro do Estoque" widgetVar="dlgEditarEstoque" modal="true"
+			showEffect="blind" hideEffect="explode" resizable="false" appendTo="@(body)">
+			
+			<h:form id="fEditar">
+				<p:outputPanel id="pgEditar" style="text-align:center;">
+					<p:panelGrid columns="2">
+						<p:outputLabel value="Id" />
+						<p:inputText value="#{paginaEstoque.estoque.id}" disabled="true" />
+						
+						<p:outputLabel value="Qnt" />
+						<p:inputText value="#{paginaEstoque.estoque.qnt}"/>
+					
+						<p:outputLabel value="Preco" />
+						<p:inputText value="#{paginaEstoque.estoque.preco}"/>
+						
+						<p:outputLabel value="Produto" />
+						<p:selectOneMenu id="selProduto" value="#{paginaEstoque.estoque.produtos}"
+							converter="produtoConverter">
+				            
+				            <f:selectItems value="#{paginaEstoque.estoque.produtos}"
+				                 var="end" itemLabel="#{end}" itemValue="#{end}" />
+				        </p:selectOneMenu>
+				        
+				        <p:outputLabel value="Fornecedor" />
+						<p:selectOneMenu id="selFornecedor" value="#{paginaEstoque.estoque.usuarios}"
+							converter="fornecedorConverter">
+				            
+				            <f:selectItems value="#{paginaEstoque.estoque.usuarios}"
+				                 var="end" itemLabel="#{end}" itemValue="#{end}" />
+				        </p:selectOneMenu>
+						
+					</p:panelGrid>
+					
+					<p:panelGrid columns="2">
+					
+						<p:commandButton value="Confirmar" actionListener="#{paginaEstoque.Update}"
+							oncomplete="PF('dlgEditarEstoque').hide()"
+							update=":fTabela:tabEstoques :msgGlobal" />
+						
+						<p:commandButton value="Cancelar" actionListener="#{paginaEstoque.Clear}" 
+							oncomplete="PF('dlgEditarEstoque').hide()"
+							update=":fEditar:pgEditar"/>
+					
+					</p:panelGrid>
+				</p:outputPanel>
+			</h:form>
+		</p:dialog>
+	
+	</ui:define>
+	
+	<ui:define name="rodape">
+		<ui:include src="/templates/rodape.xhtml" />
+	</ui:define>
+	
+</ui:composition>

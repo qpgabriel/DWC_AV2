@@ -1,0 +1,14 @@
+@charset "ISO-8859-1";
+
+#imgPrincipal {
+	float: nome;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+
+.ui-clock {
+	float: right;
+	color: red;
+}

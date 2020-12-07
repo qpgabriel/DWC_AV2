@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets" >
+
+	<h:form>
+		<p:menu style="width:200px" toggleable="true">
+	        
+	        <p:submenu label="Gerenciamento">
+	        	<p:menuitem value="Estoque" icon="pi pi-inbox" url="./estoques.jsf" />
+	            <p:menuitem value="Produto" icon="pi pi-tablet" url="./produtos.jsf" />
+	            <p:menuitem value="Categoria" icon="pi pi-list" url="./categorias.jsf" />
+	            <p:menuitem value="Fornecedor" icon="pi pi-shopping-cart" url="./fornecededors.jsf" />
+	            <p:menuitem value="Usuarios" icon="pi pi-user" url="./usuarios.jsf" />
+	        </p:submenu>
+	        
+	    </p:menu>
+	</h:form>
+	
+</ui:composition>

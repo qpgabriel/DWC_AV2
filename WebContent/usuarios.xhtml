@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+
+	<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:h="http://xmlns.jcp.org/jsf/html"
+		xmlns:f="http://xmlns.jcp.org/jsf/core"
+		xmlns:p="http://primefaces.org/ui"
+		xmlns:ui="http://xmlns.jcp.org/jsf/facelets" 
+		template="/templates/template.xhtml">
+
+	<ui:define name="cabecalho">
+		<ui:include src="/templates/cabecalho.xhtml" />
+	</ui:define>
+	
+	<ui:define name="menu_esquerdo">
+		<ui:include src="/templates/menu_esquerdo.xhtml" />
+	</ui:define>
+	
+	<ui:define name="conteudo">
+			
+		<h:form id="fTabela">
+			<p:dataTable id="tabUsuarios" var="p" value="#{paginaUsuario.usuarios}"
+				rows="10"
+	            paginator="true" >
+	            
+			    <p:column headerText="Id">
+			        <h:outputText value="#{p.id}" />
+			    </p:column>
+			 
+			    <p:column headerText="Nome">
+			        <h:outputText value="#{p.nome}" />
+			    </p:column>
+			    			    
+			    <p:column headerText=".">
+			        <p:commandButton icon="pi pi-pencil" actionListener="#{paginaPusuario.PrepararEditar}"  
+			        	onclick="PF('dlgEditarPusuario').show()"
+			        	update=":fEditar:pgEditar"/>
+			        	
+			        <p:commandButton icon="ui-icon-trash"/>
+			    </p:column>
+	
+			</p:dataTable>
+		</h:form>
+		
+		<p:dialog header="Editar um cadastro do Usuario" widgetVar="dlgEditarUsuario" modal="true"
+			showEffect="blind" hideEffect="explode" resizable="false" appendTo="@(body)">
+			
+			<h:form id="fEditar">
+				<p:outputPanel id="pgEditar" style="text-align:center;">
+					<p:panelGrid columns="2">
+						<p:outputLabel value="Id" />
+						<p:inputText value="#{paginaUsuario.usuario.id}" disabled="true" />
+						
+						<p:outputLabel value="Nome" />
+						<p:inputText value="#{paginaUsuario.usuario.nome}"/>
+										
+					</p:panelGrid>
+					
+					<p:panelGrid columns="2">
+					
+						<p:commandButton value="Confirmar" actionListener="#{paginaUsuario.Update}"
+							oncomplete="PF('dlgEditarUsuario').hide()"
+							update=":fTabela:tabUsuarios :msgGlobal" />
+						
+						<p:commandButton value="Cancelar" actionListener="#{paginaUsuario.Clear}" 
+							oncomplete="PF('dlgEditarUsuario').hide()"
+							update=":fEditar:pgEditar"/>
+					
+					</p:panelGrid>
+				</p:outputPanel>
+			</h:form>
+		</p:dialog>
+	
+	</ui:define>
+	
+	<ui:define name="rodape">
+		<ui:include src="/templates/rodape.xhtml" />
+	</ui:define>
+	
+</ui:composition>

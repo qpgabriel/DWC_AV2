@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+
+	<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:h="http://xmlns.jcp.org/jsf/html"
+		xmlns:f="http://xmlns.jcp.org/jsf/core"
+		xmlns:p="http://primefaces.org/ui"
+		xmlns:ui="http://xmlns.jcp.org/jsf/facelets" 
+		template="/templates/template.xhtml">
+
+	<ui:define name="cabecalho">
+		<ui:include src="/templates/cabecalho.xhtml" />
+	</ui:define>
+	
+	<ui:define name="menu_esquerdo">
+		<ui:include src="/templates/menu_esquerdo.xhtml" />
+	</ui:define>
+	
+	<ui:define name="conteudo">
+			
+		<h:form id="fTabela">
+			<p:dataTable id="tabProdutos" var="p" value="#{paginaProduto.listaDeProdutos}"
+				rows="10"
+	            paginator="true" >
+	            
+			    <p:column headerText="Id">
+			        <h:outputText value="#{p.id}" />
+			    </p:column>
+			 
+			    <p:column headerText="Nome">
+			        <h:outputText value="#{p.nome}" />
+			    </p:column>
+			 
+			    <p:column headerText="Preco">
+			        <h:outputText value="#{p.preco}" />
+			    </p:column>
+			    
+			    <p:column headerText="Descricao">
+			        <h:outputText value="#{p.descricao}" />
+			    </p:column>
+			    
+			    <p:column headerText="Categoria">
+			         <p:dataList value="#{p.categorias}" var="categoria" type="ordered"
+			         	emptyMessage="Sem categorias cadastradas" rows="3" >
+				        #{categoria}
+				    </p:dataList>
+			    </p:column>
+			    
+			    <p:column headerText="Fornecedores">
+			         <p:dataList value="#{p.fornecedors}" var="fornecedor" type="ordered"
+			         	emptyMessage="Sem fornecedors cadastrados" rows="3" >
+				        #{fornecedor}
+				    </p:dataList>
+			    </p:column>
+			    
+			    <p:column headerText=".">
+			        <p:commandButton icon="pi pi-pencil" actionListener="#{paginaProduto.PrepararEditar}"  
+			        	onclick="PF('dlgEditarProduto').show()"
+			        	update=":fEditar:pgEditar"/>
+			        	
+			        <p:commandButton icon="ui-icon-trash"/>
+			    </p:column>
+	
+			</p:dataTable>
+		</h:form>
+		
+		<p:dialog header="Editar um cadastro do Produto" widgetVar="dlgEditarProduto" modal="true"
+			showEffect="blind" hideEffect="explode" resizable="false" appendTo="@(body)">
+			
+			<h:form id="fEditar">
+				<p:outputPanel id="pgEditar" style="text-align:center;">
+					<p:panelGrid columns="2">
+						<p:outputLabel value="Id" />
+						<p:inputText value="#{paginaProduto.produto.idProduto}" disabled="true" />
+						
+						<p:outputLabel value="Nome" />
+						<p:inputText value="#{paginaProduto.produto.nomeProduto}"/>
+					
+						<p:outputLabel value="Preco" />
+						<p:inputText value="#{paginaProduto.produto.nomeProduto}"/>
+						
+						<p:outputLabel value="Descricao" />
+						<p:inputText value="#{paginaProduto.produto.descricaoProduto}"/>
+						
+						<p:outputLabel value="Categoria" />
+						<p:selectOneMenu id="selCategoria" value="#{paginaProduto.produto.categorias}"
+							converter="categoriaConverter">
+				            
+				            <f:selectItems value="#{paginaProduto.produto.categorias}"
+				                 var="end" itemLabel="#{end}" itemValue="#{end}" />
+				        </p:selectOneMenu>
+				        
+				        <p:outputLabel value="Fornecedor" />
+						<p:selectOneMenu id="selFornecedor" value="#{paginaProduto.produto.fornecedors}"
+							converter="fornecedorConverter">
+				            
+				            <f:selectItems value="#{paginaProduto.produto.fornecedors}"
+				                 var="end" itemLabel="#{end}" itemValue="#{end}" />
+				        </p:selectOneMenu>
+						
+					</p:panelGrid>
+					
+					<p:panelGrid columns="2">
+					
+						<p:commandButton value="Confirmar" actionListener="#{paginaProduto.Update}"
+							oncomplete="PF('dlgEditarProduto').hide()"
+							update=":fTabela:tabProdutos :msgGlobal" />
+						
+						<p:commandButton value="Cancelar" actionListener="#{paginaProduto.Clear}" 
+							oncomplete="PF('dlgEditarProduto').hide()"
+							update=":fEditar:pgEditar"/>
+					
+					</p:panelGrid>
+				</p:outputPanel>
+			</h:form>
+		</p:dialog>
+	
+	</ui:define>
+	
+	<ui:define name="rodape">
+		<ui:include src="/templates/rodape.xhtml" />
+	</ui:define>
+	
+</ui:composition>
